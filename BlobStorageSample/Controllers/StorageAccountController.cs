@@ -38,8 +38,15 @@ namespace BlobStorageSample.Controllers
         }
 
         [HttpPost]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         public async Task<ActionResult> Upload([FromForm] IFormFile file)
         {
+            if (file.Length <= 0)
+            {
+                return NoContent();
+            }
+
             await _blobStorageService.UploadAsync(file.FileName, file.OpenReadStream()).ConfigureAwait(false);
 
             return Ok();

@@ -36,13 +36,18 @@ namespace BlobStorageSample.Services
             var blobClient = _containerClient.GetBlobClient(fileName);
 
             using var stream = new MemoryStream();
-            var blob = await blobClient.DownloadToAsync(stream).ConfigureAwait(false);
+            await blobClient.DownloadToAsync(stream).ConfigureAwait(false);
 
             return stream.ToArray();
         }
 
         public async Task UploadAsync(string fileName, Stream fileStream)
         {
+            if (await FileExistsAsync(fileName).ConfigureAwait(false))
+            {
+                var blobClient = _containerClient.GetBlobClient(fileName);
+                await blobClient.UploadAsync(fileStream).ConfigureAwait(false);
+            }
             await _containerClient.UploadBlobAsync(fileName, fileStream).ConfigureAwait(false);
         }
     }
