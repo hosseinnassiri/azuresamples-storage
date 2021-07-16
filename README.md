@@ -79,7 +79,7 @@ Update your appsettings.json file by adding these key/values :
     "TenantId": "your tenant id",
     "ClientId": "client id (azure ad application id)",
     "ClientSecret": "client secret",
-    "StorageAccountUrl": "url to your storage account",
+    "StorageAccountUrl": "blob service endpoint: https://{storage account name}.blob.core.windows.net/",
     "RootContainer": "you container name"
 },
 ```
