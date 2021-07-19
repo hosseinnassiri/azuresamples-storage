@@ -1,4 +1,5 @@
 ﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -14,6 +15,6 @@ namespace BlobStorageSample.Services
         Task UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default);
         Task<BlobContainerClient> AddNewContainer(string containerName, CancellationToken cancellationToken = default);
         Task MoveBlobToArchive(string blobName, CancellationToken cancellationToken = default);
-        Task RehydrateBlob(string blobName, CancellationToken cancellationToken = default);
+        Task RehydrateBlob(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default);
     }
 }

@@ -1,4 +1,5 @@
-﻿using BlobStorageSample.Requests;
+﻿using Azure.Storage.Blobs.Models;
+using BlobStorageSample.Requests;
 using BlobStorageSample.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -68,7 +69,7 @@ namespace BlobStorageSample.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> Rehydrate(RehydrateFile request, CancellationToken cancellationToken)
         {
-            await _blobStorageService.RehydrateBlob(request.BlobName, cancellationToken: cancellationToken).ConfigureAwait(false);
+            await _blobStorageService.RehydrateBlob(request.BlobName, priority: RehydratePriority.High, cancellationToken: cancellationToken).ConfigureAwait(false);
             return Ok();
         }
     }
