@@ -53,7 +53,7 @@ namespace BlobStorageSample.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddContainer([FromBody]AddNewContainer request, CancellationToken cancellationToken)
+        public async Task<ActionResult> AddContainer([FromBody] AddNewContainer request, CancellationToken cancellationToken)
         {
             await _blobStorageService.AddNewContainerAsync(request.ContainerName, cancellationToken: cancellationToken).ConfigureAwait(false);
             return Ok();
