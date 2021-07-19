@@ -1,12 +1,9 @@
-using Azure.Identity;
-using Azure.Storage.Blobs;
-using BlobStorageSample.Services;
+using BlobStorageSample.Infrastructures;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 
 namespace BlobStorageSample
 {
@@ -23,13 +20,7 @@ namespace BlobStorageSample
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationCredential"));
-            var settings = Configuration.GetSection("ApplicationCredential").Get<ApplicationSettings>();
-            var credential = new ClientSecretCredential(settings.TenantId, settings.ClientId, settings.ClientSecret);
-            services.AddScoped(_ => new BlobContainerClient(new Uri(settings.StorageAccountUrl, settings.RootContainer), credential));
-            services.AddScoped(_ => new BlobServiceClient(settings.StorageAccountUrl, credential));
-
-            services.AddScoped<IBlobStorageService, BlobStorageService>();
+            services.RegisterBlobStorageService(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
