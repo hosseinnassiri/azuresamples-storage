@@ -1,4 +1,5 @@
-﻿using BlobStorageSample.Services;
+﻿using BlobStorageSample.Requests;
+using BlobStorageSample.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
@@ -47,6 +48,27 @@ namespace BlobStorageSample.Controllers
 
             await _blobStorageService.UploadAsync(file.FileName, file.OpenReadStream(), cancellationToken: cancellationToken).ConfigureAwait(false);
 
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> AddContainer(AddNewContainer request, CancellationToken cancellationToken)
+        {
+            await _blobStorageService.AddNewContainer(request.ContainerName, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> Archive(ArchiveFile request, CancellationToken cancellationToken)
+        {
+            await _blobStorageService.MoveBlobToArchive(request.BlobName, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<ActionResult> Rehydrate(RehydrateFile request, CancellationToken cancellationToken)
+        {
+            await _blobStorageService.RehydrateBlob(request.BlobName, cancellationToken: cancellationToken).ConfigureAwait(false);
             return Ok();
         }
     }

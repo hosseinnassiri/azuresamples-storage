@@ -25,10 +25,10 @@ namespace BlobStorageSample
             services.AddControllers();
             services.Configure<ApplicationSettings>(Configuration.GetSection("ApplicationCredential"));
             var settings = Configuration.GetSection("ApplicationCredential").Get<ApplicationSettings>();
-            services.AddScoped(_ => {
-                var credential = new ClientSecretCredential(settings.TenantId, settings.ClientId, settings.ClientSecret);
-                return new BlobContainerClient(new Uri(settings.StorageAccountUrl, settings.RootContainer), credential);
-            });
+            var credential = new ClientSecretCredential(settings.TenantId, settings.ClientId, settings.ClientSecret);
+            services.AddScoped(_ => new BlobContainerClient(new Uri(settings.StorageAccountUrl, settings.RootContainer), credential));
+            services.AddScoped(_ => new BlobServiceClient(settings.StorageAccountUrl, credential));
+
             services.AddScoped<IBlobStorageService, BlobStorageService>();
         }
 
