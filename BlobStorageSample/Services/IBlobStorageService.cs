@@ -13,8 +13,8 @@ namespace BlobStorageSample.Services
         Task<bool> FileExistsAsync(string fileName, CancellationToken cancellationToken = default);
         Task<byte[]> DownloadAsync(string fileName, CancellationToken cancellationToken = default);
         Task UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default);
-        Task<BlobContainerClient> AddNewContainer(string containerName, CancellationToken cancellationToken = default);
-        Task MoveBlobToArchive(string blobName, CancellationToken cancellationToken = default);
-        Task RehydrateBlob(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default);
+        Task<BlobContainerClient> AddNewContainerAsync(string containerName, CancellationToken cancellationToken = default);
+        Task MoveBlobToArchiveAsync(string blobName, CancellationToken cancellationToken = default);
+        Task RehydrateBlobAsync(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default);
     }
 }

@@ -69,13 +69,13 @@ namespace BlobStorageSample.Services
             await _containerClient.UploadBlobAsync(fileName, fileStream, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<BlobContainerClient> AddNewContainer(string containerName, CancellationToken cancellationToken = default)
+        public async Task<BlobContainerClient> AddNewContainerAsync(string containerName, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Adding new container {@container} to storage account.", containerName);
             return await _blobServiceClient.CreateBlobContainerAsync(containerName, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task MoveBlobToArchive(string blobName, CancellationToken cancellationToken = default)
+        public async Task MoveBlobToArchiveAsync(string blobName, CancellationToken cancellationToken = default)
         {
             if (!await FileExistsAsync(blobName, cancellationToken: cancellationToken).ConfigureAwait(false))
             {
@@ -96,7 +96,7 @@ namespace BlobStorageSample.Services
         /// <param name="blobName"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
-        public async Task RehydrateBlob(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default)
+        public async Task RehydrateBlobAsync(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default)
         {
             if (!await FileExistsAsync(blobName, cancellationToken: cancellationToken).ConfigureAwait(false))
             {
