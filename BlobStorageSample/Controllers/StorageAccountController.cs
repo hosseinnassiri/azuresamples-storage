@@ -53,21 +53,21 @@ namespace BlobStorageSample.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddContainer(AddNewContainer request, CancellationToken cancellationToken)
+        public async Task<ActionResult> AddContainer([FromBody]AddNewContainer request, CancellationToken cancellationToken)
         {
             await _blobStorageService.AddNewContainerAsync(request.ContainerName, cancellationToken: cancellationToken).ConfigureAwait(false);
             return Ok();
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Archive(ArchiveFile request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Archive([FromBody] ArchiveFile request, CancellationToken cancellationToken)
         {
             await _blobStorageService.MoveBlobToArchiveAsync(request.BlobName, cancellationToken: cancellationToken).ConfigureAwait(false);
             return Ok();
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Rehydrate(RehydrateFile request, CancellationToken cancellationToken)
+        public async Task<ActionResult> Rehydrate([FromBody] RehydrateFile request, CancellationToken cancellationToken)
         {
             await _blobStorageService.RehydrateBlobAsync(request.BlobName, priority: RehydratePriority.High, cancellationToken: cancellationToken).ConfigureAwait(false);
             return Ok();
