@@ -47,9 +47,9 @@ namespace BlobStorageSample.Controllers
                 return NoContent();
             }
 
-            await _blobStorageService.UploadAsync(file.FileName, file.OpenReadStream(), cancellationToken: cancellationToken).ConfigureAwait(false);
+            var result = await _blobStorageService.UploadAsync(file.FileName, file.OpenReadStream(), cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            return Ok();
+            return Ok(result);
         }
 
         [HttpPost("[action]")]
@@ -62,8 +62,8 @@ namespace BlobStorageSample.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> Archive([FromBody] ArchiveFile request, CancellationToken cancellationToken)
         {
-            await _blobStorageService.MoveBlobToArchiveAsync(request.BlobName, cancellationToken: cancellationToken).ConfigureAwait(false);
-            return Ok();
+            var result = await _blobStorageService.MoveBlobToArchiveAsync(request.BlobName, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return Ok(result);
         }
 
         [HttpPost("[action]")]

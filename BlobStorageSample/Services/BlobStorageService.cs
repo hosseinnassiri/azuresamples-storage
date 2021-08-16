@@ -69,7 +69,7 @@ namespace BlobStorageSample.Services
             return await blobClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default)
+        public async Task<bool> UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Uploading blob {@blobName}.", fileName);
             if (await FileExistsAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false))
@@ -77,10 +77,11 @@ namespace BlobStorageSample.Services
                 _logger.LogInformation("Blob {@blobName} already existis, trying to overwrite.", fileName);
                 var blobClient = _containerClient.GetBlobClient(fileName);
                 await blobClient.UploadAsync(fileStream, overwrite: true, cancellationToken: cancellationToken).ConfigureAwait(false);
-                return;
+                return true;
             }
 
             await _containerClient.UploadBlobAsync(fileName, fileStream, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return true;
         }
 
         public async Task<BlobContainerClient> AddNewContainerAsync(string containerName, CancellationToken cancellationToken = default)

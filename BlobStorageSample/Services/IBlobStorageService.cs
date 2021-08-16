@@ -46,8 +46,8 @@ namespace BlobStorageSample.Services
         /// <param name="fileName">The name of the blob to upload.</param>
         /// <param name="fileStream">The stream containing the file content to upload.</param>
         /// <param name="cancellationToken">Optional System.Threading.CancellationToken to propagate notifications that the operation should be cancelled.</param>
-        /// <returns></returns>
-        Task UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default);
+        /// <returns>Returns true if upload is successful.</returns>
+        Task<bool> UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default);
 
         /// <summary>
         /// Creates a new blob container under the storage account. If the container with the same name already exists, the operation fails.
@@ -62,7 +62,7 @@ namespace BlobStorageSample.Services
         /// </summary>
         /// <param name="blobName">The name of the blob to archive.</param>
         /// <param name="cancellationToken">Optional System.Threading.CancellationToken to propagate notifications that the operation should be cancelled.</param>
-        /// <returns>A boolean indicating the action was successful or not.</returns>
+        /// <returns>Returns true if the archiving action is successful.</returns>
         Task<bool> MoveBlobToArchiveAsync(string blobName, CancellationToken cancellationToken = default);
 
         /// <summary>
@@ -73,7 +73,7 @@ namespace BlobStorageSample.Services
         /// </summary>
         /// <param name="blobName">The name of the archived blob to rehydrate.</param>
         /// <param name="cancellationToken">Optional System.Threading.CancellationToken to propagate notifications that the operation should be cancelled.</param>
-        /// <returns>A boolean indicating the action was successful or not.</returns>
+        /// <returns>Returns true if the rehydrating action is successful.</returns>
         Task<bool> RehydrateBlobAsync(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default);
     }
 }
