@@ -69,8 +69,8 @@ namespace BlobStorageSample.Controllers
         [HttpPost("[action]")]
         public async Task<ActionResult> Rehydrate([FromBody] RehydrateFile request, CancellationToken cancellationToken)
         {
-            await _blobStorageService.RehydrateBlobAsync(request.BlobName, priority: RehydratePriority.High, cancellationToken: cancellationToken).ConfigureAwait(false);
-            return Ok();
+            var result = await _blobStorageService.RehydrateBlobAsync(request.BlobName, priority: RehydratePriority.High, cancellationToken: cancellationToken).ConfigureAwait(false);
+            return Ok(result);
         }
     }
 }

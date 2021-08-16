@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -88,7 +89,7 @@ namespace BlobStorageSample.Services
             return await _blobServiceClient.CreateBlobContainerAsync(containerName, cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task MoveBlobToArchiveAsync(string blobName, CancellationToken cancellationToken = default)
+        public async Task<bool> MoveBlobToArchiveAsync(string blobName, CancellationToken cancellationToken = default)
         {
             if (!await FileExistsAsync(blobName, cancellationToken: cancellationToken).ConfigureAwait(false))
             {
@@ -97,18 +98,12 @@ namespace BlobStorageSample.Services
             }
 
             var blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.SetAccessTierAsync(AccessTier.Archive, cancellationToken: cancellationToken).ConfigureAwait(false);
+            var result = await blobClient.SetAccessTierAsync(AccessTier.Archive, cancellationToken: cancellationToken).ConfigureAwait(false);
             _logger.LogInformation("Archiving process has started for blob {@blobName}.", blobName);
+            return result.Status.Equals((int)HttpStatusCode.OK);
         }
 
-        /// <summary>
-        /// Standard priority: The rehydration request will be processed in the order it was received and may take up to 15 hours.
-        /// High priority: The rehydration request will be prioritized over Standard requests and may finish in under 1 hour for objects under ten GB in size.
-        /// <seealso cref="https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blob-rehydration?tabs=azure-portal#rehydrate-an-archived-blob-to-an-online-tier"/>
-        /// </summary>
-        /// <param name="blobName"></param>
-        /// <param name="cancellationToken"></param>
-        public async Task RehydrateBlobAsync(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default)
+        public async Task<bool> RehydrateBlobAsync(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default)
         {
             if (!await FileExistsAsync(blobName, cancellationToken: cancellationToken).ConfigureAwait(false))
             {
@@ -117,8 +112,9 @@ namespace BlobStorageSample.Services
             }
 
             var blobClient = _containerClient.GetBlobClient(blobName);
-            await blobClient.SetAccessTierAsync(AccessTier.Hot, rehydratePriority: priority, cancellationToken: cancellationToken).ConfigureAwait(false);
+            var result = await blobClient.SetAccessTierAsync(AccessTier.Hot, rehydratePriority: priority, cancellationToken: cancellationToken).ConfigureAwait(false);
             _logger.LogInformation("Rehydrating process has started for blob {@blobName} with priority {@priority}. it can take up to 1 or 15 hours depending on the priority.", blobName, priority);
+            return result.Status.Equals((int)HttpStatusCode.OK);
         }
     }
 }
