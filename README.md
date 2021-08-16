@@ -66,7 +66,7 @@ New-AzRoleAssignment -ApplicationId $servicePrincipal.ApplicationId `
     -ResourceGroupName $resourceGroup
 ```
 
-Create Client Id & Client Secret for the Azure AD Applicatio.
+Create Client Id & Client Secret for the Azure AD Application.
 
 ## Sample asp.net core application
 Add package references for the following packages:
@@ -83,3 +83,5 @@ Update your appsettings.json file by adding these key/values :
     "RootContainer": "you container name"
 },
 ```
+
+## Monitoring and Diagnostics
