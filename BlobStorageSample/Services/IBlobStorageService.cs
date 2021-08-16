@@ -12,6 +12,7 @@ namespace BlobStorageSample.Services
         Task<IReadOnlyList<BlobItem>> GetAllBlobsAsync(CancellationToken cancellationToken = default);
         Task<bool> FileExistsAsync(string fileName, CancellationToken cancellationToken = default);
         Task<byte[]> DownloadAsync(string fileName, CancellationToken cancellationToken = default);
+        Task<Stream> DownloadAsStreamAsync(string fileName, CancellationToken cancellationToken = default);
         Task UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default);
         Task<BlobContainerClient> AddNewContainerAsync(string containerName, CancellationToken cancellationToken = default);
         Task MoveBlobToArchiveAsync(string blobName, CancellationToken cancellationToken = default);

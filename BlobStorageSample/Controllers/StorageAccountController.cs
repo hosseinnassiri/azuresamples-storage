@@ -34,7 +34,7 @@ namespace BlobStorageSample.Controllers
                 return NotFound();
             }
 
-            return File(await _blobStorageService.DownloadAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false), "application/octet-stream", fileName);
+            return File(await _blobStorageService.DownloadAsStreamAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false), "application/octet-stream", fileName);
         }
 
         [HttpPost]

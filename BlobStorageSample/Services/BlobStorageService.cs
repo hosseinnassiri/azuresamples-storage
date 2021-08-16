@@ -55,6 +55,19 @@ namespace BlobStorageSample.Services
             return stream.ToArray();
         }
 
+        public async Task<Stream> DownloadAsStreamAsync(string fileName, CancellationToken cancellationToken = default)
+        {
+            _logger.LogInformation("Downloading blob {@blobName}.", fileName);
+            if (!await FileExistsAsync(fileName, cancellationToken: cancellationToken).ConfigureAwait(false))
+            {
+                _logger.LogError("Cannot download {@blobName}, it doesn't exist.", fileName);
+                throw new ArgumentException($"Blob {fileName} doesn't exist.", nameof(fileName));
+            }
+            var blobClient = _containerClient.GetBlobClient(fileName);
+
+            return await blobClient.OpenReadAsync(cancellationToken: cancellationToken).ConfigureAwait(false);
+        }
+
         public async Task UploadAsync(string fileName, Stream fileStream, CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Uploading blob {@blobName}.", fileName);
@@ -95,7 +108,6 @@ namespace BlobStorageSample.Services
         /// </summary>
         /// <param name="blobName"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public async Task RehydrateBlobAsync(string blobName, RehydratePriority priority = RehydratePriority.Standard, CancellationToken cancellationToken = default)
         {
             if (!await FileExistsAsync(blobName, cancellationToken: cancellationToken).ConfigureAwait(false))
