@@ -22,14 +22,14 @@ namespace BlobStorageSample.Services
             _logger = logger;
         }
 
-        public async Task<IReadOnlyList<string>> GetAllFileNamesAsync(CancellationToken cancellationToken = default)
+        public async Task<IReadOnlyList<BlobItem>> GetAllBlobsAsync(CancellationToken cancellationToken = default)
         {
             _logger.LogInformation("Listing all blobs in container {@container} in storage account {@storageAccount}.", _containerClient.Name, _containerClient.AccountName);
             var blobs = _containerClient.GetBlobsAsync(cancellationToken: cancellationToken);
-            var list = new List<string>();
+            var list = new List<BlobItem>();
             await foreach (BlobItem blob in blobs)
             {
-                list.Add(blob.Name);
+                list.Add(blob);
             }
             return list;
         }

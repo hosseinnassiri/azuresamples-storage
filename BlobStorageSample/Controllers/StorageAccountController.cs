@@ -23,7 +23,7 @@ namespace BlobStorageSample.Controllers
         [HttpGet]
         public async Task<ActionResult<IReadOnlyList<string>>> Get(CancellationToken cancellationToken)
         {
-            return Ok(await _blobStorageService.GetAllFileNamesAsync(cancellationToken: cancellationToken).ConfigureAwait(false));
+            return Ok(await _blobStorageService.GetAllBlobsAsync(cancellationToken: cancellationToken).ConfigureAwait(false));
         }
 
         [HttpGet("{fileName}")]
