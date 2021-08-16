@@ -8,6 +8,6 @@ namespace BlobStorageSample
         public string ClientId { get; set; }
         public string ClientSecret { get; set; }
         public Uri StorageAccountUrl { get; set; }
-        public string RootContainer { get; set; }
+        public string Container { get; set; }
     }
 }

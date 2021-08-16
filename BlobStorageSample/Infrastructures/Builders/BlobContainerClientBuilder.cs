@@ -8,27 +8,33 @@ namespace BlobStorageSample.Infrastructures
     public sealed class BlobContainerClientBuilder : IBlobContainerClientBuilder
     {
         private readonly Uri _storageAccountUrl;
+        private readonly string _container;
+        private readonly Uri _endpoint;
 
-        public BlobContainerClientBuilder(Uri storageAccountUrl)
+        public BlobContainerClientBuilder(Uri storageAccountUrl, string container)
         {
             _storageAccountUrl = storageAccountUrl;
+            _container = container;
+            _endpoint = new Uri(storageAccountUrl, container);
         }
 
-        public BlobContainerClientBuilder(string storageAccountUrl)
+        public BlobContainerClientBuilder(string storageAccountUrl, string container)
         {
             _storageAccountUrl = new Uri(storageAccountUrl);
+            _container = container;
+            _endpoint = new Uri(_storageAccountUrl, container);
         }
 
         public IBlobContainerClientFinalStep WithClientCredential(string tenantId, string clientId, string clientSecret)
         {
             var credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-            return new BlobContainerClientFinalStep(_storageAccountUrl, credential);
+            return new BlobContainerClientFinalStep(_endpoint, credential);
         }
 
         public IBlobContainerClientFinalStep WithSasCredential(string sasToken)
         {
             var credential = new AzureSasCredential(sasToken);
-            return new BlobContainerClientFinalStep(_storageAccountUrl, credential);
+            return new BlobContainerClientFinalStep(_endpoint, credential);
         }
 
         private sealed class BlobContainerClientFinalStep : IBlobContainerClientFinalStep
