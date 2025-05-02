@@ -1,6 +1,6 @@
 ﻿using Azure.Storage.Blobs;
 
-namespace BlobStorageSample.Infrastructures
+namespace BlobStorageSample.Infrastructures.Builders
 {
     public interface IBlobContainerClientBuilder
     {

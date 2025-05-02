@@ -3,7 +3,7 @@ using Azure.Identity;
 using Azure.Storage.Blobs;
 using System;
 
-namespace BlobStorageSample.Infrastructures
+namespace BlobStorageSample.Infrastructures.Builders
 {
     public sealed class BlobContainerClientBuilder : IBlobContainerClientBuilder
     {
@@ -11,7 +11,7 @@ namespace BlobStorageSample.Infrastructures
         private readonly string _container;
         private readonly Uri _endpoint;
 
-        public BlobContainerClientBuilder(Uri storageAccountUrl, string container)
+		public BlobContainerClientBuilder(Uri storageAccountUrl, string container)
         {
             _storageAccountUrl = storageAccountUrl;
             _container = container;
